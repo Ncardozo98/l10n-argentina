@@ -21,7 +21,8 @@ except (ImportError, IOError) as e:
             return func
 
     WebService = object
-    _logger.debug("Cannot import WebService, wsapi from easywsy: \n%s" % e)
+    _logger.debug("Cannot import WebService, wsapi from easywsy: \n%s" %
+                  repr(e))
 
 
 class Error:
@@ -299,8 +300,8 @@ class WSFE(WebService):
 
             if invoice._context.get('raise-exception', True):
                 raise UserError(_('AFIP Web Service Error'),
-                                 _('La factura no fue aprobada. \n' +
-                                   '%s') % msg)
+                                _('La factura no fue aprobada. \n' +
+                                  '%s') % msg)
 
         elif res['Resultado'] == 'A' or res['Resultado'] == 'P':
             for comp in res['Comprobantes']:
