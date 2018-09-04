@@ -47,6 +47,9 @@ class Event:
 
 class WSFE(WebService):
 
+    # AFIP Requests a (13, 2) format for amounts
+    _decimal_precision = 2
+
     def parse_invoices(self, invoices, first_number=False):
         reg_qty = len(invoices)
         voucher_type = invoices[0]._get_voucher_type()
@@ -203,12 +206,13 @@ class WSFE(WebService):
         vals = {
             'number': invoice.internal_number,
             'id': invoice.id,
-            'ImpIVA': importe_iva,
-            'ImpNeto': importe_neto,
-            'ImpOpEx': importe_operaciones_exentas,
-            'ImpTotal': importe_total,
-            'ImpTotConc': importe_neto_no_gravado,
-            'ImpTrib': importe_tributos,
+            'ImpIVA': round(importe_iva, self._decimal_precision),
+            'ImpNeto': round(importe_neto, self._decimal_precision),
+            'ImpOpEx': round(importe_operaciones_exentas,
+                             self._decimal_precision),
+            'ImpTotal': round(importe_total, self._decimal_precision),
+            'ImpTotConc': round(importe_neto_no_gravado, self._decimal_precision),
+            'ImpTrib': round(importe_tributos, self._decimal_precision),
             'Iva': {
                 'AlicIva': iva_array,
             },
